@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Create a new tmux session named "dev" and detach from it
+tmux new-session -d -s dev -n main
+
+# Split the first window into 4 panes using the specified logic
+tmux split-window -v -t dev:0     # Split window0 vertically
+tmux split-window -h -t dev:0     # Split top pane horizontally
+tmux select-pane -t 0             # Select the top-left pane
+tmux split-window -h -t dev:0     # Split top-left pane horizontally
+
+# Create the second window with 2 panes split vertically and rename it to "window2"
+tmux new-window -t dev -n htop
+tmux split-window -v -t dev:1
+
+# Run htop in the first pane of window2
+tmux send-keys -t dev:1.0 'htop' C-m
+
+# Create the third window with 1 pane and rename it to "window3"
+tmux new-window -t dev -n one-pane
+
+# Select the first window
+tmux select-window -t dev:0
+
+# Attach to the tmux session
+tmux attach -t dev
